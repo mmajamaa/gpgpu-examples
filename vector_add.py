@@ -18,6 +18,8 @@ from pycuda.compiler import SourceModule
 import pycuda.autoinit
 import numpy
 from jinja2 import Template
+# own module imports
+from helpers import d_types
 
 
 def main(size, data_type):
@@ -56,28 +58,6 @@ def main(size, data_type):
             print('Results match!')
         else:
             print('Results differ!')
- 
-
-def d_types(type_name):
-    """
-    Helper function to get right data type names for both implementations.
-
-    @param type_name: (str) Data type's general name.
-    @return (tuple[str][str]) Corresponding data type's name that Numpy and
-        CUDA C uses.
-    """    
-
-    if type_name == 'float':
-        np_type = 'float32'
-        c_type = 'float'
-    elif type_name == 'double':
-        np_type = 'float64'
-        c_type = 'double'
-    elif type_name == 'int':
-        np_type = 'int32'
-        c_type = 'int'
-
-    return (np_type, c_type)
 
 
 def vector_add_gpu(a, b, c, size, d_type):
@@ -133,7 +113,7 @@ kernel_code = """
         // get the global index of the thread
         int idx = threadIdx.x + blockIdx.x * blockDim.x;
 
-        // check that the thread is not outside the bounds of the computation
+        // check that the thread is not outside of the bounds of the computation
         if (idx >= size) return;
 
         c[idx] = a[idx] + b[idx];
