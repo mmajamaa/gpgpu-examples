@@ -10,11 +10,14 @@
 :Version: 1.0.0
 """
 
+
+# built-in package imports
+import time
+# third party package imports
 import numpy as np
 import pycuda.driver as cuda
 from pycuda.compiler import SourceModule
 import pycuda.autoinit
-import time
 
 
 d = 1 # increase this to increase total size of N
